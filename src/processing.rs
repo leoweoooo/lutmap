@@ -16,8 +16,8 @@ pub enum Channel {
 }
 
 impl Channel {
-    pub const ALL: [Channel; 3] = [Channel::R, Channel::G, Channel::B];
-    pub fn label(self) -> &'static str {
+    pub const _ALL: [Channel; 3] = [Channel::R, Channel::G, Channel::B];
+    pub fn _label(self) -> &'static str {
         match self {
             Channel::R => "R",
             Channel::G => "G",

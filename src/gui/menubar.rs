@@ -1,9 +1,9 @@
 use crate::app::AppState;
-use eframe::egui::{Button, ComboBox, Id, MenuBar, Panel, Ui, ViewportCommand};
+use eframe::egui::{Button, Panel, Ui, ViewportCommand};
 
 pub fn show(ui: &mut Ui, app: &mut AppState) {
-    Panel::top(Id::new("top_menubar")).show_inside(ui, |ui| {
-        MenuBar::new().ui(ui, |ui| {
+    Panel::top("top_menubar").show_inside(ui, |ui| {
+        eframe::egui::MenuBar::new().ui(ui, |ui| {
             ui.menu_button("File", |ui| {
                 let not_busy = !app.currently_busy;
 
@@ -26,27 +26,6 @@ pub fn show(ui: &mut Ui, app: &mut AppState) {
                         app.open_folder(folder);
                     }
                 }
-
-                ui.separator();
-
-                let can_export = not_busy && app.loaded_count > 0;
-                if ui
-                    .add_enabled(can_export, Button::new("Save Images…"))
-                    .clicked()
-                {
-                    ui.close();
-                    if let Some(folder) = rfd::FileDialog::new().pick_folder() {
-                        app.start_export(folder);
-                    }
-                }
-
-                ComboBox::from_label("Format")
-                    .selected_text(app.export_format.clone())
-                    .show_ui(ui, |ui| {
-                        ui.selectable_value(&mut app.export_format, "PNG".to_string(), "PNG");
-                        ui.selectable_value(&mut app.export_format, "JPEG".to_string(), "JPEG");
-                        ui.selectable_value(&mut app.export_format, "TIFF".to_string(), "TIFF");
-                    });
 
                 ui.separator();
 

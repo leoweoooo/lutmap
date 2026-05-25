@@ -13,7 +13,6 @@ pub fn show(ui: &mut Ui, app: &mut AppState) {
         .resizable(false)
         .min_size(100.0)
         .show_inside(ui, |ui| {
-            ui.separator();
             ui.label(RichText::new("Channels").size(16.0));
             ui.add_space(5.0);
 
