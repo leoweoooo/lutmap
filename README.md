@@ -1,2 +1,3 @@
 # lutmap
-Minimal desktop tool for applying pseudocolor LUT mappings.
+Minimal image processing application built in Rust.
+![lutmap screenshot](assets/screenshot.png)
