@@ -1,0 +1,11 @@
+# rust ignores
+Cargo.lock
+/target
+
+# macos ignores (https://github.com/github/gitignore/blob/main/Global/macOS.gitignore)
+.DS_Store
+.localized
+__MACOSX/
+.AppleDouble
+.LSOverride
+Icon[]
