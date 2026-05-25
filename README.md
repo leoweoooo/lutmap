@@ -16,7 +16,7 @@ The software is lovingly built with `eframe` at its core, with parts of its proc
 
 ### Pre-built Binaries
 
-Pre-built binaries for Windows, Linux, and macOS are available on the [Releases](https://github.com/leoweoooo/lutmap/releases) page.
+Pre-built binaries for Windows is available on the [Releases](https://github.com/leoweoooo/lutmap/releases) page.
 
 ### Manual Installation
 
