@@ -1,0 +1,19 @@
+[package]
+name = "lutmap"
+version = "0.1.0"
+edition = "2024"
+description = "Minimal desktop tool for applying pseudocolor LUT mappings."
+license = "GPL-3.0"
+repository = "https://github.com/yourname/lutmap"
+readme = "README.md"
+keywords = ["lut", "pseudocolor", "imaging", "tiff", "gui"]
+categories = ["multimedia::images", "visualization"]
+
+[dependencies]
+eframe = "0.34.2"
+egui_extras = "0.34.2"
+image = "0.25.5"
+num_cpus = "1.17.0"
+rayon = "1.12.0"
+rfd = "0.17.2"
+threadpool = "1.8.1"
