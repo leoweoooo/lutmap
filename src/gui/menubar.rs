@@ -7,23 +7,16 @@ pub fn show(ui: &mut Ui, app: &mut AppState) {
             ui.menu_button("File", |ui| {
                 let not_busy = !app.currently_busy;
 
-                if ui.add_enabled(not_busy, Button::new("Open File")).clicked() {
-                    ui.close();
-                    if let Some(path) = rfd::FileDialog::new()
-                        .add_filter("Image Files", &["png", "jpg", "jpeg", "tiff", "tif"])
-                        .pick_file()
-                    {
-                        app.open_file(path);
-                    }
-                }
-
                 if ui
-                    .add_enabled(not_busy, Button::new("Open Folder"))
+                    .add_enabled(not_busy, Button::new("Open File(s)"))
                     .clicked()
                 {
                     ui.close();
-                    if let Some(folder) = rfd::FileDialog::new().pick_folder() {
-                        app.open_folder(folder);
+                    if let Some(paths) = rfd::FileDialog::new()
+                        .add_filter("Image Files", &["png", "jpg", "jpeg", "tiff", "tif"])
+                        .pick_files()
+                    {
+                        app.open_files(paths);
                     }
                 }
 

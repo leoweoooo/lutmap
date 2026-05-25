@@ -8,19 +8,9 @@ pub fn show(ui: &mut Ui, app: &mut AppState) {
             ui.horizontal(|ui| {
                 ui.add_space(5.0);
 
-                if app.export.in_progress() {
+                if app.currently_busy {
                     ui.spinner();
-                    ui.label(format!(
-                        "Exporting {}/{}…",
-                        app.export.done, app.export.total
-                    ));
-                } else if app.currently_busy {
-                    ui.spinner();
-                    ui.label(format!(
-                        "Loading {}/{}…",
-                        app.loaded_count,
-                        app.images.len()
-                    ));
+                    ui.label(format!("Working..."));
                 } else if app.loaded_count > 0 {
                     ui.label(format!(
                         "Image {}/{}",
@@ -41,8 +31,23 @@ pub fn show(ui: &mut Ui, app: &mut AppState) {
                         .add_enabled(can_save, Button::new("Save Images…"))
                         .clicked()
                     {
-                        if let Some(folder) = rfd::FileDialog::new().pick_folder() {
-                            app.start_export(folder);
+                        let ext = app.export_format.to_lowercase();
+                        let default_filename = app
+                            .images
+                            .get(app.current_image)
+                            .and_then(|(p, _)| {
+                                p.with_extension(&ext)
+                                    .file_name()
+                                    .map(|n| n.to_string_lossy().into_owned())
+                            })
+                            .unwrap_or_else(|| format!("image.{}", ext));
+
+                        if let Some(out_path) = rfd::FileDialog::new()
+                            .add_filter("Image", &[&ext])
+                            .set_file_name(&default_filename)
+                            .save_file()
+                        {
+                            app.start_export(out_path);
                         }
                     }
 

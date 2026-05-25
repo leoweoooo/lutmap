@@ -27,7 +27,7 @@ pub fn show(ui: &mut Ui, app: &mut AppState) {
                         );
                     });
                 }
-                Some((_, LoadState::NotLoaded)) => {
+                Some((_, LoadState::NotLoaded)) | Some((_, LoadState::Processing(_))) => {
                     ui.centered_and_justified(|ui| {
                         ui.label(RichText::new("Loading…").italics().color(Color32::GRAY));
                     });
@@ -43,7 +43,6 @@ pub fn show(ui: &mut Ui, app: &mut AppState) {
                 }
             }
         });
-
     handle_navigation(ui, app);
 }
 

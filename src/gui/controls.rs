@@ -1,12 +1,7 @@
-use std::time::Duration;
-
 use eframe::egui::{Align, Layout, Panel, RichText, Slider, Ui};
 use egui_extras::TableBuilder;
 
-use crate::{
-    app::{AppState, LoadState},
-    processing::{Channel, ChannelState, process_channels},
-};
+use crate::{app::AppState, processing::Channel};
 
 pub fn show(ui: &mut Ui, app: &mut AppState) {
     Panel::bottom("channel_control")
@@ -42,16 +37,11 @@ pub fn show(ui: &mut Ui, app: &mut AppState) {
                 })
                 .body(|mut body| {
                     let row_h = 28.0;
-                    let channels = [
-                        ("R", &mut app.channels[Channel::R] as *mut ChannelState),
-                        ("G", &mut app.channels[Channel::G] as *mut ChannelState),
-                        ("B", &mut app.channels[Channel::B] as *mut ChannelState),
-                    ];
-                    for (label, state_ptr) in channels {
-                        let state = unsafe { &mut *state_ptr };
+                    for ch in Channel::ALL {
                         body.row(row_h, |mut row| {
+                            let state = &mut app.channels[ch];
                             row.col(|ui| {
-                                ui.label(label);
+                                ui.label(ch.label());
                             });
                             row.col(|ui| {
                                 changed_any |=
@@ -72,17 +62,7 @@ pub fn show(ui: &mut Ui, app: &mut AppState) {
                 });
 
             if changed_any {
-                if let Some((_, LoadState::Loaded { original, display })) =
-                    app.images.get_mut(app.current_image)
-                {
-                    let preview = process_channels(original, &app.channels);
-                    display.set(preview, Default::default());
-                }
-                ui.ctx().request_repaint_after(Duration::from_millis(16));
-            }
-
-            if released_any {
-                app.reprocess_all();
+                app.update_preview();
             }
         });
 }

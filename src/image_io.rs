@@ -1,23 +1,45 @@
-use std::{fs::File, io::BufReader, path::Path};
+use std::path::Path;
 
 use eframe::egui::ColorImage;
+use exif::{In, Reader, Tag};
 use image::{ImageBuffer, ImageFormat, Rgba};
 
-pub fn load_image_from(path: &Path) -> Result<ColorImage, String> {
-    let file = File::open(path).map_err(|e| e.to_string())?;
-    let reader = BufReader::new(file);
-    let image = image::ImageReader::new(reader)
-        .with_guessed_format()
-        .map_err(|e| e.to_string())?
-        .decode()
-        .map_err(|e| e.to_string())?;
+pub fn load_image(path: &Path) -> Result<ColorImage, String> {
+    let bytes = std::fs::read(path).map_err(|e| format!("Failed to read file: {}", e))?;
+    let mut img = image::load_from_memory(&bytes).map_err(|e| e.to_string())?;
 
-    let size = [image.width() as usize, image.height() as usize];
-    let pixels = image.to_rgba8().into_raw();
-    Ok(ColorImage::from_rgba_unmultiplied(size, &pixels))
+    // if there is any exif data about orientation, we try to apply it to the image.
+    if let Ok(exif) = Reader::new().read_from_container(&mut std::io::Cursor::new(&bytes)) {
+        if let Some(orientation) = exif.get_field(Tag::Orientation, In::PRIMARY) {
+            match orientation.value.get_uint(0) {
+                Some(2) => img = img.fliph(),
+                Some(3) => img = img.rotate180(),
+                Some(4) => img = img.flipv(),
+                Some(5) => {
+                    img = img.rotate90();
+                    img = img.fliph();
+                }
+                Some(6) => img = img.rotate90(),
+                Some(7) => {
+                    img = img.rotate270();
+                    img = img.fliph();
+                }
+                Some(8) => img = img.rotate270(),
+                _ => {}
+            }
+        }
+    }
+
+    let image_buffer = img.into_rgba8();
+    let size = [
+        image_buffer.width() as usize,
+        image_buffer.height() as usize,
+    ];
+    let pixels = image_buffer.into_raw();
+    Ok(ColorImage::from_rgba_unmultiplied(size, pixels.as_slice()))
 }
 
-pub fn color_image_to_rgba(image: &ColorImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
+pub fn colorimage_to_imagebuffer(image: &ColorImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
     let [w, h] = image.size;
     let mut buf: Vec<u8> = Vec::with_capacity(w * h * 4);
     for px in &image.pixels {
@@ -37,11 +59,4 @@ pub fn format_from_str(format: &str) -> (ImageFormat, &'static str) {
             (ImageFormat::Png, "png")
         }
     }
-}
-
-pub fn is_supported_extension(ext: &str) -> bool {
-    matches!(
-        ext.to_lowercase().as_str(),
-        "png" | "jpg" | "jpeg" | "tiff" | "tif"
-    )
 }

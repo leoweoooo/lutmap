@@ -5,6 +5,7 @@ mod app;
 mod gui;
 mod image_io;
 mod processing;
+mod worker;
 
 use eframe;
 
@@ -18,7 +19,7 @@ fn main() -> eframe::Result {
     };
 
     eframe::run_native(
-        "lut-mapper",
+        "lutmap",
         native_options,
         Box::new(|_cc| Ok(Box::new(app::AppState::default()))),
     )
