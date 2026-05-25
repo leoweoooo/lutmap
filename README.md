@@ -14,9 +14,13 @@ The software is lovingly built with `eframe` at its core, with parts of its proc
 
 ## Usage
 
+### Pre-built Binaries
+
+Pre-built binaries for Windows, Linux, and macOS are available on the [Releases](https://github.com/leoweoooo/lutmap/releases) page.
+
 ### Manual Installation
 
-To install the software manually, you need to have the [Rust](https://rustup.rs/) toolchain, as well as [Git](https://git-scm.com/) available on your device. Once installed, type the following lines into your terminal of choice:
+To compile the source code yourself, you need to have the [Rust](https://rustup.rs/) toolchain, as well as [Git](https://git-scm.com/) available on your device. Once installed, type the following lines into your terminal of choice:
 
 ```
 git clone https://github.com/leoweoooo/lutmap.git
