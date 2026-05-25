@@ -1,7 +1,7 @@
 use crate::app::AppState;
 use eframe::egui::{Align, Button, ComboBox, Layout, Panel, Ui};
 
-pub fn show(ui: &mut Ui, app: &mut AppState) {
+pub(super) fn show(ui: &mut Ui, app: &mut AppState) {
     Panel::bottom("bottom_statusbar")
         .resizable(false)
         .show_inside(ui, |ui| {

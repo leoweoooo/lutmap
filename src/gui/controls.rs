@@ -3,7 +3,7 @@ use egui_extras::TableBuilder;
 
 use crate::{app::AppState, processing::Channel};
 
-pub fn show(ui: &mut Ui, app: &mut AppState) {
+pub(super) fn show(ui: &mut Ui, app: &mut AppState) {
     Panel::bottom("channel_control")
         .resizable(false)
         .min_size(100.0)

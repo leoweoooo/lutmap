@@ -36,6 +36,7 @@ pub fn load_image(path: &Path) -> Result<ColorImage, String> {
         image_buffer.height() as usize,
     ];
     let pixels = image_buffer.into_raw();
+
     Ok(ColorImage::from_rgba_unmultiplied(size, pixels.as_slice()))
 }
 

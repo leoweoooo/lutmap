@@ -2,7 +2,7 @@ use eframe::egui::{Color32, Frame, Image, Key, Margin, RichText, Stroke, Ui};
 
 use crate::app::{AppState, LoadState};
 
-pub fn show(ui: &mut Ui, app: &mut AppState) {
+pub(super) fn show(ui: &mut Ui, app: &mut AppState) {
     ui.heading("Preview");
     ui.add_space(5.0);
 
