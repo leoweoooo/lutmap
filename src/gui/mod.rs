@@ -4,14 +4,13 @@ mod preview;
 mod statusbar;
 
 use crate::app::AppState;
-use eframe::egui::{CentralPanel, Context, Id, TopBottomPanel};
+use eframe::egui::{CentralPanel, Ui};
 
-pub fn draw(ctx: &Context, app: &mut AppState) {
-    menubar::show(ctx, app);
-    statusbar::show(ctx, app);
-
-    CentralPanel::default().show(ctx, |ui| {
-        controls::show_inside(ui, app);
+pub fn draw(ui: &mut Ui, app: &mut AppState) {
+    statusbar::show(ui, app);
+    menubar::show(ui, app);
+    CentralPanel::default().show_inside(ui, |ui| {
+        controls::show(ui, app);
         preview::show(ui, app);
     });
 }

@@ -1,8 +1,8 @@
 use crate::app::AppState;
-use eframe::egui::{Align, Context, Id, Layout, Panel};
+use eframe::egui::{Align, Id, Layout, Panel, Ui};
 
-pub fn show(ctx: &Context, app: &AppState) {
-    Panel::bottom(Id::new("bottom_statusbar")).show(ctx, |ui| {
+pub fn show(ui: &mut Ui, app: &AppState) {
+    Panel::bottom(Id::new("bottom_statusbar")).show_inside(ui, |ui| {
         ui.horizontal(|ui| {
             ui.add_space(5.0);
 

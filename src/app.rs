@@ -10,7 +10,6 @@ use eframe::{
 use num_cpus;
 use std::path::PathBuf;
 use std::sync::mpsc::{self, Receiver, Sender};
-use std::time::Duration;
 use threadpool::ThreadPool;
 
 pub enum LoadState {
@@ -99,16 +98,10 @@ impl Default for AppState {
 }
 
 impl eframe::App for AppState {
-    fn update(&mut self, ctx: &eframe::egui::Context, frame: &mut eframe::Frame) {
-        self.poll_workers(ctx);
-        gui::draw(ctx, self);
-
-        if self.currently_busy {
-            ctx.request_repaint_after(Duration::from_millis(16));
-        }
+    fn ui(&mut self, ui: &mut eframe::egui::Ui, _frame: &mut eframe::Frame) {
+        self.poll_workers(ui.ctx());
+        gui::draw(ui, self);
     }
-
-    fn ui(&mut self, ui: &mut eframe::egui::Ui, frame: &mut eframe::Frame) {}
 }
 
 impl AppState {

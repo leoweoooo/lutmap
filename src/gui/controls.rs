@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use eframe::egui::{Align, Layout, RichText, Slider, Ui};
+use eframe::egui::{Align, Layout, Panel, RichText, Slider, Ui};
 use egui_extras::TableBuilder;
 
 use crate::{
@@ -8,10 +8,10 @@ use crate::{
     processing::{Channel, ChannelState, process_channels},
 };
 
-pub fn show_inside(ui: &mut Ui, app: &mut AppState) {
-    eframe::egui::TopBottomPanel::bottom("channel_control")
+pub fn show(ui: &mut Ui, app: &mut AppState) {
+    Panel::bottom("channel_control")
         .resizable(false)
-        .min_height(100.0)
+        .min_size(100.0)
         .show_inside(ui, |ui| {
             ui.separator();
             ui.label(RichText::new("Channels").size(16.0));
