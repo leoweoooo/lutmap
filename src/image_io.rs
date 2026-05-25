@@ -41,10 +41,7 @@ pub fn load_image(path: &Path) -> Result<ColorImage, String> {
 
 pub fn colorimage_to_imagebuffer(image: &ColorImage) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
     let [w, h] = image.size;
-    let mut buf: Vec<u8> = Vec::with_capacity(w * h * 4);
-    for px in &image.pixels {
-        buf.extend_from_slice(&[px.r(), px.g(), px.b(), px.a()]);
-    }
+    let buf: Vec<u8> = bytemuck::cast_slice(image.pixels.as_slice()).to_vec();
     ImageBuffer::<Rgba<u8>, _>::from_vec(w as u32, h as u32, buf)
         .expect("pixel buffer size must match image dimensions")
 }
